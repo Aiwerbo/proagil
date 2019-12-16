@@ -131,6 +131,7 @@ cg-board piece.fading {
   pointer-events: none;
   opacity: 0.8;
   font-size: 9px;
+  
 }
 .cg-wrap coords.ranks {
   right: -15px;
@@ -138,6 +139,7 @@ cg-board piece.fading {
   flex-flow: column-reverse;
   height: 100%;
   width: 12px;
+
 }
 .cg-wrap coords.ranks.black {
   flex-flow: column;
@@ -150,6 +152,7 @@ cg-board piece.fading {
   height: 16px;
   text-transform: uppercase;
   text-align: center;
+ 
 }
 .cg-wrap coords.files.black {
   flex-flow: row-reverse;
@@ -163,11 +166,12 @@ cg-board piece.fading {
 /*
  * Board
  */
-.blue .cg-wrap {
+cg-board {
   background-image: url('images/board/blue.svg');
+ 
 }
 
-.cg-wrap piece.pawn  {
+.cg-wrap piece.pawn {
   background-image: url('images/pieces/merida/wP.svg');
 }
 .cg-wrap piece.bishop.white {
