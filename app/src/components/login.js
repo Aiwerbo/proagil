@@ -33,7 +33,7 @@ const Login = () => {
           <input className='login-input' type="text" name="name" placeholder="Name" onChange={gameName} />
           <button className='login-button' type="submit" onClick={startGame}>Start Game</button>
         </form>
-        <div style={{ color: 'red', marginTop: '15px'}}>{error}</div>
+        <div style={{color: 'red', marginTop: '15px', fontSize: '13px'}}>{error}</div>
       </div>
     </div>
   )
