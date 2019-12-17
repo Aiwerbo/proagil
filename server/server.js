@@ -30,6 +30,7 @@ server.get(seekURL, (req, res) => {
 server.post(seekURL, (req, res) => {
   fs.readFile('games.json', (err, data) => {
     const body = req.body;
+    body.spelare = [body.spelare];
     body.id = uuidv4();
     body.moves = [];
     const json = JSON.parse(data);
@@ -40,8 +41,25 @@ server.post(seekURL, (req, res) => {
   });
   res.sendStatus(201);
 });
-
+// Accept to play game
 server.post(`${seekURL}/:id`, (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+
+  fs.readFile('games.json', (err, data) => {
+    const json = JSON.parse(data);
+    const filtered = json.filter((x) => x.id === id);
+    filtered[0].spelare.push(body.spelare);
+    if (filtered.length < 1) {
+      res.status(404).end();
+      return;
+    }
+    res.status(200).send(filtered);
+  });
+});
+
+server.get(`${gameURL}/:id`, (req, res) => {
+  // may iunclude the strange hashish chess string instead of below crap data.
   const id = req.params.id;
   fs.readFile('games.json', (err, data) => {
     const json = JSON.parse(data);
@@ -50,13 +68,8 @@ server.post(`${seekURL}/:id`, (req, res) => {
       res.status(404).end();
       return;
     }
-    res.send(filtered);
+    res.send(filtered[0].moves);
   });
-});
-
-server.get(`${gameURL}/:id`, (req, res) => {
-  const id = req.params.id;
-  res.send(id);
 });
 
 server.post(`${gameURL}/move`, (req, res) => res.send('Game Move Post'));
