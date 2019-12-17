@@ -1,29 +1,19 @@
-import React, { useEffect } from 'react';
-import './App.css';
-import Chess from 'chess.js';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Lobby from './components/lobby';
+import Login from './components/login';
+import Game from './components/game';
 
-
-//import 'react-chessground/dist/styles/chessground.css';
-
-const Chessground = require('chessground').Chessground;
-//var Chess = require('chess.js');
-
-
-function App() {
-  const chess = new Chess();
-  
-  console.log(chess);
- 
-  useEffect(() => {
-    
-    Chessground(document.body, {});
-    
-    
-  }, []);
+const App = () => {
 
   return (
-    <div className="App">
-    </div>
+    <Router>
+        <Switch>
+            <Route path='/lobby' component={Lobby} />
+            <Route path='/game/:id' component={Game} />
+            <Route exact path='/' component={Login} />
+        </Switch>
+    </Router>
   );
 }
 
