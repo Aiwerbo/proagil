@@ -17,6 +17,8 @@ paths:
       responses:
         200:
           description: OK
+        404:
+          description: Not Found
     post:
       summary: Add a new game
       description:
@@ -25,6 +27,8 @@ paths:
       responses:
         201:
           description: Created
+        400:
+          description: Bad data
   api/seeks/{id}: 
     post:
       summary: Accept to play new game
@@ -34,6 +38,8 @@ paths:
       responses:
         200:
           description: OK
+        403:
+          description: Forbidden
         404:
           description: Not Found
   api/game/{id}:
@@ -45,5 +51,7 @@ paths:
       responses:
         200:
           description: OK
+        403: 
+          description: Forbidden
         404: 
-          description: No Game Data
+          description: Not found

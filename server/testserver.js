@@ -10,7 +10,8 @@ const gameURL = '/test/api/game';
 
 server.use(express.json());
 
-fs.open('testgames.json', 'r', (err) => {
+fs.open('testgames.json', 'r', (err, fd) => { 
+
   if (err) {
     fs.writeFile('testgames.json', JSON.stringify([{"spelare":["Test1"],"id":"1","moves":[{"from": "string", "to": "string"}]}]), { flag: 'wx' }, (error) => {
       if (error) throw error;
@@ -27,6 +28,11 @@ server.get(seekURL, (req, res) => {
 });
 // Add a new game suggestion
 server.post(seekURL, (req, res) => {
+
+  if(!req.body.spelare) {
+    res.status(400).end()
+    return;
+  }
   fs.readFile('testgames.json', (err, data) => {
     const { spelare } = req.body;
     const body = { spelare: [spelare], id: uuidv4(), moves: [] };
@@ -40,6 +46,10 @@ server.post(seekURL, (req, res) => {
 });
 // Accept to play game
 server.post(`${seekURL}/:id`, (req, res) => {
+  if(!req.params.id || !req.body.spelare) {
+    res.status(400).end()
+    return;
+  }
   const { id } = req.params;
   const { body } = req;
 
@@ -64,12 +74,16 @@ server.post(`${seekURL}/:id`, (req, res) => {
 
 server.get(`${gameURL}/:id`, (req, res) => {
   // may iunclude the strange hashish chess string instead of below crap data.
+  if(!req.body.id) {
+    res.status(404).end();
+      return;
+  }
   const { id } = req.params;
   fs.readFile('testgames.json', (err, data) => {
     const json = JSON.parse(data);
     const filtered = json.filter((x) => x.id === id);
     if (filtered.length < 1) {
-      res.status(404).end();
+      res.status(403).end();
       return;
     }
     res.status(200).send(filtered[0].moves);

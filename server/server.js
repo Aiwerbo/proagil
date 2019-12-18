@@ -27,6 +27,10 @@ server.get(seekURL, (req, res) => {
 });
 // Add a new game suggestion
 server.post(seekURL, (req, res) => {
+  if (!req.body.spelare) {
+    res.status(400).end();
+    return;
+  }
   fs.readFile('games.json', (err, data) => {
     const { spelare } = req.body;
     const body = { spelare: [spelare], id: uuidv4(), moves: [] };
@@ -40,14 +44,18 @@ server.post(seekURL, (req, res) => {
 });
 // Accept to play game
 server.post(`${seekURL}/:id`, (req, res) => {
+  if (!req.params.id || !req.body.spelare) {
+    res.status(400).end();
+    return;
+  }
   const { id } = req.params;
   const { body } = req;
 
   fs.readFile('games.json', (err, data) => {
     const json = JSON.parse(data);
     const filtered = json.filter((x) => x.id === id);
-    if(filtered[0].spelare.length > 1) {
-      res.status(403).end()
+    if (filtered[0].spelare.length > 1) {
+      res.status(403).end();
       return;
     }
     filtered[0].spelare.push(body.spelare);
@@ -64,15 +72,19 @@ server.post(`${seekURL}/:id`, (req, res) => {
 
 server.get(`${gameURL}/:id`, (req, res) => {
   // may iunclude the strange hashish chess string instead of below crap data.
+  if (!req.body.id) {
+    res.status(404).end();
+    return;
+  }
   const { id } = req.params;
   fs.readFile('games.json', (err, data) => {
     const json = JSON.parse(data);
     const filtered = json.filter((x) => x.id === id);
     if (filtered.length < 1) {
-      res.status(404).end();
+      res.status(403).end();
       return;
     }
-    res.send(filtered[0].moves);
+    res.status(200).send(filtered[0].moves);
   });
 });
 
