@@ -3,8 +3,8 @@ info:
   title: Chess API
   description: API description in Markdown.
   version: 1.0.0
-host: api.example.com
-basePath: /v1
+host: localhost:5000/
+basePath: /
 schemes:
   - http
 paths:
