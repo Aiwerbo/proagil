@@ -7,11 +7,11 @@ chai.should();
 // Tänk på att servern måste vara startad "nodemon server.js"
 
 describe('Get list off games', () => {
-  describe('GET /api/seeks', () => {
+  describe('GET /test/api/seeks', () => {
     it('Should get all games', (done) => {
       chai
-        .request('http://localhost:5000')
-        .get('/api/seeks')
+        .request('http://localhost:5001')
+        .get('/test/api/seeks')
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('array');
@@ -22,16 +22,56 @@ describe('Get list off games', () => {
 });
 
 describe('Post new game suggestion', () => {
-  describe('POST /api/seeks', () => {
+  describe('POST /test/api/seeks', () => {
     it('Should add new game suggestion', (done) => {
       chai
-        .request('http://localhost:5000')
-        .post('/api/seeks')
+        .request('http://localhost:5001')
+        .post('/test/api/seeks')
         .send({
           spelare: 'Test Player'
         })
         .end((err, res) => {
           res.should.have.status(201);
+          done();
+        });
+    });
+  });
+});
+
+describe('Post accept to play game', () => {
+  describe('POST /test/api/seeks/{id}', () => {
+    it('Should accept new game', (done) => {
+      chai
+        .request('http://localhost:5001')
+        .post('/test/api/seeks/1')
+        .send({
+          spelare: 'Test Player2'
+        })
+        .end((err, res) => {
+          if(res.status === 403) {
+          res.should.have.status(403);
+          res.body.should.be.a('object');
+            return done();
+          }
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          res.body[0].spelare.should.have.lengthOf(2)
+          done();
+        });
+    });
+  });
+});
+
+describe('Test to get all moves', () => {
+  describe('GET /test/api/game/{id}', () => {
+    it('Should get all moves', (done) => {
+      chai
+        .request('http://localhost:5001')
+        .get('/test/api/game/1')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          res.body[0].should.have.all.keys('from', 'to')
           done();
         });
     });
