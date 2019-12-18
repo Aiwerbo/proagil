@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import '../App.css';
-
+import 'react-chessground/dist/styles/chessground.css';
 import Chess from 'chess.js'
-import 'react-chessground/dist/styles/chessground.css'
+
 const Chessground = require("chessground").Chessground;
 
 const Game = () => {

@@ -1,0 +1,52 @@
+body, div, input {
+    box-sizing: border-box;
+    font-size: 100%;
+    font-family: Roboto, arial, sans-serif;
+}
+
+.login-container {
+    display: flex;           
+    justify-content: center; 
+    align-items: center;   
+    background-image: url(./media/chess.jpg);
+    height: 100vh;
+}
+
+.login-box {
+    width: 370px;
+    height: 270px;
+    padding: 25px;
+    padding-top: 35px;
+    border: 1px solid white;
+    border-radius: 20px;
+}
+
+.login-header {
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+.login-input {
+    height: 35px;
+    width: 100%;
+    padding: 5px;
+}
+
+.login-button {
+    margin-top: 10px;
+    height: 35px;
+    width: 100%;
+    background-color: rgb(17, 155, 113);
+    color: #ffffff;
+    text-transform: uppercase;
+    border: 0;
+    cursor: pointer;
+    letter-spacing: 1px;
+    outline: 0;
+}
+
+.login-button:hover {
+    background-color: rgb(16, 138, 101);
+}

@@ -5,17 +5,16 @@ import Login from './components/login';
 import Game from './components/game';
 
 const App = () => {
-
   return (
     <Router>
-        <Switch>
-            <Route path='/lobby' component={Lobby} />
-            <Route path='/game' component={Game} />
-            <Route path='/game/:id' component={Game} />
-            <Route exact path='/' component={Login} />
-        </Switch>
+      <Switch>
+        <Route path="/lobby" component={Lobby} />
+        <Route path="/game" component={Game} />
+        <Route path="/game/:id" component={Game} />
+        <Route exact path="/" component={Login} />
+      </Switch>
     </Router>
   );
-}
+};
 
 export default App;
