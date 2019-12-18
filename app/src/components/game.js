@@ -8,8 +8,8 @@ const Chessground = require("chessground").Chessground;
 const Game = () => {
   const chess = new Chess()
 
- useEffect(() => {
-  Chessground(document.body, {});
+ useEffect(() => {  
+  Chessground(document.body, {}); 
  }, [])
 
  while (!chess.game_over()) {
@@ -20,7 +20,6 @@ const Game = () => {
 
 return (
   <div className="App">
-
   </div>
   )
 }
