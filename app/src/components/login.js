@@ -9,7 +9,7 @@ const Login = () => {
 
   const gameName = (e) => {
     setName(e.target.value);
-  }
+  };
 
   const startGame = (e) => {
     e.preventDefault();
@@ -17,27 +17,27 @@ const Login = () => {
       setError('You username need to be between 2 and 15 character');
       return;
     }
-    setAuth(true)
-  }
+    setAuth(true);
+  };
 
 
   if (auth) {
     return (
       <Redirect to="/lobby" />
-    )
+    );
   }
   return (
-    <div className='login-container'>
-      <div className='login-box'>
-        <h2 className='login-header'>Play Chess</h2>
+    <div className="login-container">
+      <div className="login-box">
+        <h2 className="login-header">Play Chess</h2>
         <form>
-          <input className='login-input' type="text" name="name" placeholder="Name" onChange={gameName} value={name} />
-          <button className='login-button' type="submit" onClick={startGame}>Start Game</button>
+          <input className="login-input" type="text" name="name" placeholder="Name" onChange={gameName} value={name} />
+          <button className="login-button" type="submit" onClick={startGame}>Start Game</button>
         </form>
-        <div style={{color: 'red', marginTop: '15px', fontSize: '13px'}}>{error}</div>
+        <div style={{ color: 'red', marginTop: '15px', fontSize: '13px' }}>{error}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Login;
