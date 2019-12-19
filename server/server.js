@@ -27,6 +27,7 @@ server.get(seekURL, (req, res) => {
 });
 // Add a new game suggestion
 server.post(seekURL, (req, res) => {
+  console.log(req.body)
   if (!req.body.spelare) {
     res.status(400).end();
     return;

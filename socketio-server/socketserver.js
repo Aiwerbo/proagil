@@ -5,10 +5,11 @@ const server = io.listen(port);
 
 server.on("connection", (socket) => {
   console.log("user connected");
-  socket.emit("welcome", "User connected");
+  socket.emit("welcome", "User connected to Chess server");
 
   socket.on('message', (msg) => {
-    io.emit({data: `Hey from server ${msg}`})
+    console.log(msg)
+    socket.emit('welcome',{data: `Hey from server. You sent me: ${msg.data}`})
   })
 
 });
