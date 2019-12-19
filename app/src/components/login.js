@@ -20,10 +20,12 @@ const Login = () => {
     setAuth(true);
   };
 
-
   if (auth) {
     return (
-      <Redirect to="/lobby" />
+      <Redirect to={{
+        pathname: '/lobby',
+        state: { name }, 
+      }} />
     );
   }
   return (
