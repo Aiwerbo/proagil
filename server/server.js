@@ -39,8 +39,8 @@ server.post(seekURL, (req, res) => {
     fs.writeFile('games.json', JSON.stringify(json), (error) => {
       if (error) throw error;
     });
+    res.status(201).send(body);
   });
-  res.status(201).send(body);
 });
 // Accept to play game
 server.post(`${seekURL}/:id`, (req, res) => {
