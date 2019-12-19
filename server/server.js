@@ -40,7 +40,7 @@ server.post(seekURL, (req, res) => {
       if (error) throw error;
     });
   });
-  res.sendStatus(201);
+  res.status(201).send(body);
 });
 // Accept to play game
 server.post(`${seekURL}/:id`, (req, res) => {
