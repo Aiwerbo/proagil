@@ -1,9 +1,7 @@
-const io = require('socket.io');
-
 const port = 5010;
-const server = io.listen(port);
+const io = require('socket.io').listen(port);
 
-server.on('connection', (socket) => {
+io.sockets.on('connection', (socket) => {
   console.log('user connected');
   socket.emit('welcome', 'User connected to Chess server');
 
