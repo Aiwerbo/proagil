@@ -11,18 +11,15 @@ const Lobby = (props) => {
   const [matchId, setMatchId] = useState('');
   const [name, setName] = useState(props.location.state.name)
 
-  console.log(name)
-
   useEffect(() => {
     axios.get('/api/seeks', {headers: {'Content-Type': 'application/json'}})
     .then(response => {
-      console.log(response.data)
       setGames(response.data)
     })
     .catch(error => {
       console.log(error)
     })
-  }, [])
+  }, []);
 
   const startGame = () => {
     const player = {
@@ -30,21 +27,21 @@ const Lobby = (props) => {
     }
     axios.post('/api/seeks', JSON.stringify(player), {headers: {"Content-Type":"application/json"}})
     .then(response => {
-      console.log(response.data)
+      setMatchId(response.data.id)
+      setPlayMatch(true)
     })
     .catch(error => {
       console.log(error)
     })
   }
-
+  
   const joinGame = (id) => {
-    const match = {
+    const joinMatch = {
       spelare: name,
     }
-    axios.post('/api/seeks/'+id, JSON.stringify(match), {headers: {"Content-Type":"application/json"}})
+    axios.post('/api/seeks/'+id, JSON.stringify(joinMatch), {headers: {"Content-Type":"application/json"}})
     .then(response => {
-      console.log(response.data)
-      setMatchId(id)
+      setMatchId(response.data[0].id)
       setPlayMatch(true)
     })
     .catch(error => {
@@ -58,10 +55,7 @@ const Lobby = (props) => {
 
   if (playMatch) {
     return (
-      <Redirect to={{
-        pathname: '/game/'+ matchId,
-        state: { name }, 
-      }} />
+      <Redirect to={'/game/'+ matchId} />
     )
   }
   if (home) {
