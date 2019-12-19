@@ -24,7 +24,7 @@ const Login = () => {
     return (
       <Redirect to={{
         pathname: '/lobby',
-        state: { name }
+        state: { name }, 
       }} />
     );
   }
