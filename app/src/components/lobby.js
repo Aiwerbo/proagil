@@ -9,7 +9,9 @@ const Lobby = (props) => {
   const [home, setHome] = useState(false);
   const [playMatch, setPlayMatch] = useState(false);
   const [matchId, setMatchId] = useState('');
-  const name = props.location.state.name;
+  const [name, setName] = useState(props.location.state.name)
+
+  console.log(name)
 
   useEffect(() => {
     axios.get('/api/seeks', {headers: {'Content-Type': 'application/json'}})
@@ -56,7 +58,10 @@ const Lobby = (props) => {
 
   if (playMatch) {
     return (
-      <Redirect to={'/game/'+ matchId} />
+      <Redirect to={{
+        pathname: '/game/'+ matchId,
+        state: { name }, 
+      }} />
     )
   }
   if (home) {
