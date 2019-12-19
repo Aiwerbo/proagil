@@ -66,7 +66,7 @@ server.post(`${seekURL}/:id`, (req, res) => {
     fs.writeFile('games.json', JSON.stringify(json), (error) => {
       if (error) throw error;
     });
-    res.status(200).send(filtered);
+    res.status(200).send(filtered[0]);
   });
 });
 
