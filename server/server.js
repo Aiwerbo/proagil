@@ -75,7 +75,7 @@ server.post(`${seekURL}/:id`, (req, res) => {
 
 server.get(`${gameURL}/:id`, (req, res) => {
   // may iunclude the strange hashish chess string instead of below crap data.
-  if (!req.body.id) {
+  if (!req.params.id) {
     res.status(404).end();
     return;
   }
