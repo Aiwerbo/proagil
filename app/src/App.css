@@ -50,37 +50,3 @@ body, div, input {
 .login-button:hover {
     background-color: rgb(16, 138, 101);
 }
-
-/* ===== LOBBY ===== */
-
-.lobby-container {
-    display: flex;           
-    justify-content: center; 
-    align-items: center;   
-
-    height: 100vh;
-}
-
-.lobby-box {
-    width: 450px;
-    height: 70%;
-    padding: 25px;
-    padding-top: 10px;
-    border: 1px solid black;
-    border-radius: 20px;
-    overflow: auto;
-}
-
-.lobby-header {
-    color: black;
-    text-align: center;
-}
-
-.lobby-td {
-    width: 200px;
-}
-
-.lobby-tr {
-    height: 40px;
-    border: 1px solid grey;
-}
