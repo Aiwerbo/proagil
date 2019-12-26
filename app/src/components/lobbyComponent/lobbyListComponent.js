@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const LobbyListComponent = ({ setErrorMess, name, setMatchId, setPlayMatch }) => {
-	const [games, setGames] = useState([]);
+const LobbyListComponent = ({
+  setErrorMess, name, setMatchId, setPlayMatch,
+}) => {
+  const [games, setGames] = useState([]);
 
-	console.log(name)
-
-	useEffect(() => {
+  useEffect(() => {
     axios.get('/api/seeks', { headers: { 'Content-Type': 'application/json' } })
       .then((response) => {
         setGames(response.data);
@@ -14,9 +14,9 @@ const LobbyListComponent = ({ setErrorMess, name, setMatchId, setPlayMatch }) =>
       .catch((error) => {
         setErrorMess(error);
       });
-	}, [setErrorMess]);
-	
-	const joinGame = (id) => {
+  }, [setErrorMess]);
+
+  const joinGame = (id) => {
     const joinMatch = {
       spelare: name,
     };
@@ -28,23 +28,23 @@ const LobbyListComponent = ({ setErrorMess, name, setMatchId, setPlayMatch }) =>
       .catch((error) => {
         setErrorMess(error);
       });
-	};
-	
-	return (
-		<tbody>
-			{games.map((game) => {
-				if (game.spelare.length > 1) {
-					return null;
-				}
-				return (
-					<tr key={game.id} className="lobby-tr">
-						<td>{game.spelare}</td>
-						<td><button type="button" onClick={() => joinGame(game.id)}>Play</button></td>
-					</tr>
-				);
-			})}
-		</tbody>
-	);
+  };
+
+  return (
+    <tbody>
+      {games.map((game) => {
+        if (game.spelare.length > 1) {
+          return null;
+        }
+        return (
+          <tr key={game.id} className="lobby-tr">
+            <td>{game.spelare}</td>
+            <td><button type="button" onClick={() => joinGame(game.id)}>Play</button></td>
+          </tr>
+        );
+      })}
+    </tbody>
+  );
 };
 
 export default LobbyListComponent;

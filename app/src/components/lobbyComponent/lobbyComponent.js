@@ -54,11 +54,12 @@ const LobbyComponent = (props) => {
               <td>Join Game</td>
             </tr>
           </thead>
-          <LobbyListComponent 
-            name={name} 
-            setMatchId={setMatchId} 
-            setPlayMatch={setPlayMatch} 
-            setErrorMess={setErrorMess} />
+          <LobbyListComponent
+            name={name}
+            setMatchId={setMatchId}
+            setPlayMatch={setPlayMatch}
+            setErrorMess={setErrorMess}
+          />
         </table>
         <br />
         <button type="button" className="lobby-button" onClick={startGame}>Start New Game</button>
