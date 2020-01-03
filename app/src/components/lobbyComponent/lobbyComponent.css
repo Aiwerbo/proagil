@@ -5,32 +5,82 @@
     height: 100vh;
 }
 
+.lobby-table {
+    padding-bottom: 15px;
+    padding-top: 10px;
+}
+
 .lobby-box {
     width: 450px;
     height: 70%;
     padding: 25px;
     padding-top: 10px;
-    border: 1px solid black;
+    border: 1px solid #ffffff;
     border-radius: 20px;
     overflow: auto;
 }
 
 .lobby-header {
-    color: black;
+    color: #ffffff;
     text-align: center;
 }
 
+.lobby-table-heading {
+    color: #ffffff;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
 .lobby-td {
-    width: 200px;
+    width: 250px;
+    padding-bottom: 10px;
 }
 
 .lobby-tr {
     height: 40px;
-    border: 1px solid grey;
+}
+
+.lobby-button {
+    padding: 5px 15px;
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+.button-start {
+    background-color: #d89314;
+}
+
+.button-start:hover {
+    background-color: #c28412;
+    transition: background-color 0.3s ease;
+}
+
+.button-logout {
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+.button-logout:hover {
+    border: 1px solid #ffffff;
+    transition: border 0.3s ease;
+}
+
+.lobbyList-player {
+    color: #ffffff;
+}
+
+.lobbyList-button {
+    padding: 5px 15px;
+    font-size: 12px;
+}
+
+.lobbyList-button:hover {
+    background-color: rgb(13, 116, 116);
+    transition: background-color 0.3s ease;
 }
 
 .lobby-errorMessage {
-    color: 'red';
-    margin-top: '15px'; 
-    font-size: '13px';
+    color: #ec4d4d;
+    margin-top: 15px; 
+    font-size: 13px;
 }

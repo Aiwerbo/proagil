@@ -4,49 +4,17 @@ body, div, input {
     font-family: Roboto, arial, sans-serif;
 }
 
-.login-container {
-    display: flex;           
-    justify-content: center; 
-    align-items: center;   
-    background-image: url(./media/chess.jpg);
-    height: 100vh;
+body {
+    background: linear-gradient(to bottom right , rgba(2,20,28,1) 0%, rgba(19,76,98,1) 35%, rgba(6,75,99,1) 70%, rgba(2,20,28,1) 100%);
 }
 
-.login-box {
-    width: 370px;
-    height: 270px;
-    padding: 25px;
-    padding-top: 35px;
-    border: 1px solid white;
-    border-radius: 20px;
-}
-
-.login-header {
-    color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-align: center;
-}
-
-.login-input {
-    height: 35px;
-    width: 100%;
-    padding: 5px;
-}
-
-.login-button {
-    margin-top: 10px;
-    height: 35px;
-    width: 100%;
-    background-color: rgb(17, 155, 113);
+button {
+    background-color: rgb(15, 141, 141);
     color: #ffffff;
     text-transform: uppercase;
     border: 0;
     cursor: pointer;
     letter-spacing: 1px;
     outline: 0;
-}
-
-.login-button:hover {
-    background-color: rgb(16, 138, 101);
+    border-radius: 2px;
 }

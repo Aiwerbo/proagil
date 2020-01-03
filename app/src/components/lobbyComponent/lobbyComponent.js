@@ -47,11 +47,11 @@ const LobbyComponent = (props) => {
     <div className="lobby-container">
       <div className="lobby-box">
         <h2 className="lobby-header">Games</h2>
-        <table>
+        <table className="lobby-table">
           <thead>
             <tr>
-              <td className="lobby-td">Player</td>
-              <td>Join Game</td>
+              <td className="lobby-td"><span className="lobby-table-heading">Player</span></td>
+              <td className="lobby-td"><span className="lobby-table-heading">Join Game</span></td>
             </tr>
           </thead>
           <LobbyListComponent
@@ -62,8 +62,8 @@ const LobbyComponent = (props) => {
           />
         </table>
         <br />
-        <button type="button" className="lobby-button" onClick={startGame}>Start New Game</button>
-        <button type="button" onClick={logOut}>Log out</button>
+        <button type="button" className="lobby-button button-start" onClick={startGame}>Start New Game</button>
+        <button type="button" className="lobby-button button-logout" onClick={logOut}>Log out</button>
         <div className="lobby-errorMessage">{errorMess}</div>
       </div>
     </div>
