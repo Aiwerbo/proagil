@@ -22,10 +22,12 @@ const Login = () => {
 
   if (auth) {
     return (
-      <Redirect to={{
-        pathname: '/lobby',
-        state: { name }, 
-      }} />
+      <Redirect
+        to={{
+          pathname: '/lobby',
+          state: { spelare: name },
+        }}
+      />
     );
   }
   return (
@@ -33,10 +35,21 @@ const Login = () => {
       <div className="login-box">
         <h2 className="login-header">Play Chess</h2>
         <form>
-          <input className="login-input" type="text" name="name" placeholder="Name" onChange={gameName} value={name} />
-          <button className="login-button" type="submit" onClick={startGame}>Start Game</button>
+          <input
+            className="login-input"
+            type="text"
+            name="name"
+            placeholder="Name"
+            onChange={gameName}
+            value={name}
+          />
+          <button className="login-button" type="submit" onClick={startGame}>
+            Start Game
+          </button>
         </form>
-        <div style={{ color: 'red', marginTop: '15px', fontSize: '13px' }}>{error}</div>
+        <div style={{ color: 'red', marginTop: '15px', fontSize: '13px' }}>
+          {error}
+        </div>
       </div>
     </div>
   );

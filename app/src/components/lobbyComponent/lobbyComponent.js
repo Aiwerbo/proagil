@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import LobbyListComponent from './lobbyListComponent';
+import { postNewGame } from '../../utils/REST-API';
 import './lobbyComponent.css';
 
-const LobbyComponent = (props) => {
+const LobbyComponent = ({ location }) => {
   const [home, setHome] = useState(false);
   const [playMatch, setPlayMatch] = useState(false);
   const [matchId, setMatchId] = useState('');
   const [errorMess, setErrorMess] = useState('');
-  const name = props.location.state.name;
+  const name = location.state;
 
   const startGame = () => {
-    const player = {
-      spelare: name,
-    };
-    axios.post('/api/seeks', JSON.stringify(player), { headers: { 'Content-Type': 'application/json' } })
+    postNewGame(name)
       .then((response) => {
         setMatchId(response.data.id);
         setPlayMatch(true);
@@ -31,17 +29,16 @@ const LobbyComponent = (props) => {
 
   if (playMatch) {
     return (
-      <Redirect to={{
-        pathname: `/game/${matchId}`,
-        state: { name },
-      }}
+      <Redirect
+        to={{
+          pathname: `/game/${matchId}`,
+          state: { name },
+        }}
       />
     );
   }
   if (home) {
-    return (
-      <Redirect to="/" />
-    );
+    return <Redirect to="/" />;
   }
   return (
     <div className="lobby-container">
@@ -62,12 +59,20 @@ const LobbyComponent = (props) => {
           />
         </table>
         <br />
-        <button type="button" className="lobby-button" onClick={startGame}>Start New Game</button>
-        <button type="button" onClick={logOut}>Log out</button>
+        <button type="button" className="lobby-button" onClick={startGame}>
+          Start New Game
+        </button>
+        <button type="button" onClick={logOut}>
+          Log out
+        </button>
         <div className="lobby-errorMessage">{errorMess}</div>
       </div>
     </div>
   );
+};
+
+LobbyComponent.propTypes = {
+  location: PropTypes.string.isRequired,
 };
 
 export default LobbyComponent;
