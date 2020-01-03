@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import { getAllGames, postJoinGame } from '../../utils/REST-API';
 
 const LobbyListComponent = ({
-  setErrorMess, name, setMatchId, setPlayMatch,
+  setErrorMess,
+  name,
+  setMatchId,
+  setPlayMatch,
 }) => {
   const [games, setGames] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/seeks', { headers: { 'Content-Type': 'application/json' } })
+    getAllGames()
       .then((response) => {
         setGames(response.data);
       })
@@ -17,10 +21,7 @@ const LobbyListComponent = ({
   }, [setErrorMess]);
 
   const joinGame = (id) => {
-    const joinMatch = {
-      spelare: name,
-    };
-    axios.post(`/api/seeks/${id}`, JSON.stringify(joinMatch), { headers: { 'Content-Type': 'application/json' } })
+    postJoinGame(name, id)
       .then((response) => {
         setMatchId(response.data.id);
         setPlayMatch(true);
@@ -39,12 +40,23 @@ const LobbyListComponent = ({
         return (
           <tr key={game.id} className="lobby-tr">
             <td>{game.spelare}</td>
-            <td><button type="button" onClick={() => joinGame(game.id)}>Play</button></td>
+            <td>
+              <button type="button" onClick={() => joinGame(game.id)}>
+                Play
+              </button>
+            </td>
           </tr>
         );
       })}
     </tbody>
   );
+};
+
+LobbyListComponent.propTypes = {
+  setErrorMess: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  setMatchId: PropTypes.string.isRequired,
+  setPlayMatch: PropTypes.string.isRequired,
 };
 
 export default LobbyListComponent;
