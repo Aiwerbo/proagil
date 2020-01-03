@@ -22,7 +22,7 @@ const LobbyListComponent = ({
     };
     axios.post(`/api/seeks/${id}`, JSON.stringify(joinMatch), { headers: { 'Content-Type': 'application/json' } })
       .then((response) => {
-        setMatchId(response.data[0].id);
+        setMatchId(response.data.id);
         setPlayMatch(true);
       })
       .catch((error) => {
