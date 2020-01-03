@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import '../App.css';
+import './loginComponent.css';
 
 const Login = () => {
   const [name, setName] = useState('');
@@ -47,9 +47,7 @@ const Login = () => {
             Start Game
           </button>
         </form>
-        <div style={{ color: 'red', marginTop: '15px', fontSize: '13px' }}>
-          {error}
-        </div>
+        <div className="login-errorMessage">{error}</div>
       </div>
     </div>
   );

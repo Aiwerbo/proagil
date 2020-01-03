@@ -39,12 +39,8 @@ const LobbyListComponent = ({
         }
         return (
           <tr key={game.id} className="lobby-tr">
-            <td>{game.spelare}</td>
-            <td>
-              <button type="button" onClick={() => joinGame(game.id)}>
-                Play
-              </button>
-            </td>
+            <td className="lobbyList-player">{game.spelare}</td>
+            <td><button type="button" className="lobbyList-button" onClick={() => joinGame(game.id)}>Play</button></td>
           </tr>
         );
       })}

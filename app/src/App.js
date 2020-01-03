@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LobbyComponent from './components/lobbyComponent/lobbyComponent';
-import Login from './components/login';
+import Login from './components/loginComponent/loginComponent';
 import Game from './components/game';
 
 const App = () => {
