@@ -8,6 +8,12 @@ const port = 5000;
 const seekURL = '/api/seeks';
 const gameURL = '/api/game';
 
+const writeFileFn = (data) => {
+  fs.writeFile('games.json', JSON.stringify(data), (error) => {
+    if (error) throw error;
+  });
+}
+
 server.use(express.json());
 
 fs.open('games.json', 'r', (err) => {
@@ -37,9 +43,7 @@ server.post(seekURL, (req, res) => {
     const body = { spelare: [spelare], id: uuidv4(), moves: [] };
     const json = JSON.parse(data);
     json.push(body);
-    fs.writeFile('games.json', JSON.stringify(json), (error) => {
-      if (error) throw error;
-    });
+    writeFileFn(json)
     res.status(201).send(body);
   });
 });
@@ -64,16 +68,14 @@ server.post(`${seekURL}/:id`, (req, res) => {
       res.status(404).end();
       return;
     }
-    fs.writeFile('games.json', JSON.stringify(json), (error) => {
-      if (error) throw error;
-    });
+    writeFileFn(json)
     res.status(200).send(filtered[0]);
   });
 });
 
 server.get(`${gameURL}/:id`, (req, res) => {
   // may iunclude the strange hashish chess string instead of below crap data.
-  if (!req.body.id) {
+  if (!req.params.id) {
     res.status(404).end();
     return;
   }
