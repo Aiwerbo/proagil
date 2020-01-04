@@ -40,7 +40,15 @@ const LobbyListComponent = ({
         return (
           <tr key={game.id} className="lobby-tr">
             <td className="lobbyList-player">{game.spelare}</td>
-            <td><button type="button" className="lobbyList-button" onClick={() => joinGame(game.id)}>Play</button></td>
+            <td>
+              <button
+                type="button"
+                className="lobbyList-button"
+                onClick={() => joinGame(game.id)}
+              >
+                Play
+              </button>
+            </td>
           </tr>
         );
       })}
@@ -49,10 +57,10 @@ const LobbyListComponent = ({
 };
 
 LobbyListComponent.propTypes = {
-  setErrorMess: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  setMatchId: PropTypes.string.isRequired,
-  setPlayMatch: PropTypes.string.isRequired,
+  setErrorMess: PropTypes.func.isRequired,
+  name: PropTypes.object.isRequired,
+  setMatchId: PropTypes.func.isRequired,
+  setPlayMatch: PropTypes.func.isRequired,
 };
 
 export default LobbyListComponent;
