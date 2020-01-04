@@ -13,13 +13,14 @@ const Game = () => {
   const chess = new Chess();
   let ground;
 
-  const [creator, setCreator] = useState(true);
-  const [gameOver, setGameOver] = useState(false);
+  const [inCheck, setInCheck] = useState(false);
+  const [inCheckMate, setInCheckMate] = useState(false);
+  const [inDraw, setInDraw] = useState(false);
   const [config, updateConfig] = useState({
     fen: '',
     turnColor: 'white',
     movable: {
-      color: 'white', // Something like: creator ? 'white' : 'black'
+      color: 'white', // Something like: userArray[0] = 'white' && userArray[1] = 'black'
       dests: {},
       events: {
         after: (from, to) => {
@@ -28,13 +29,19 @@ const Game = () => {
           console.log(from, to);
           console.log(chess.turn());
 
-          // Checking if the game is over.
-          if (chess.game_over() === true) {
-            console.log('CHECKMATE');
+          if (chess.in_check() === true) {
+            setInCheck(true);
+          }
+
+          if (chess.in_checkmate() === true) {
+            setInCheckMate(true);
+          }
+
+          if (chess.in_draw() === true) {
+            setInDraw(true);
           }
 
           const fen = chess.fen();
-          config.fen = fen;
           updateConfig({ ...config, fen }); // Fen-update not working, yet updating useEffect.
         },
       },
@@ -45,30 +52,13 @@ const Game = () => {
         const destsObj = {};
         destsObj[String(key)] = legitMoves;
         ground.set({ movable: { dests: destsObj } });
-        console.log(config);
       },
       move: (from, to) => {
         const move = chess.move({ from, to });
         // If the move is legit, this if changes the turnColor, and while testing, the playercolor
-        // When possible, transform this mutate to setState({...state , turnColor: 'color'})
         if (move !== null) {
-          if (config.turnColor === 'white') {
-            /* ground.set({turnColor: 'black'}) */
-            /* updateConfig({...config, turnColor: 'black'}); */
-            config.turnColor = 'black';
-          } else if (config.turnColor === 'black') {
-            /* ground.set({turnColor: 'white'}) */
-            /* updateConfig({...config, turnColor: 'white'}); */
-            config.turnColor = 'white';
-          }
-
-          if (config.movable.color === 'white') {
-            /* ground.set({movable: {color: 'black'}}) */
-            config.movable.color = 'black';
-          } else if (config.movable.color === 'black') {
-            /* ground.set({movable: {color: 'white'}}) */
-            config.movable.color = 'white';
-          }
+          config.turnColor === 'white' ? config.turnColor = 'black' : config.turnColor = 'white';
+          config.movable.color === 'white' ? config.movable.color = 'black' : config.movable.color = 'white';
         }
       },
     },
@@ -76,7 +66,17 @@ const Game = () => {
 
   useEffect(() => {
     ground = Chessground(document.querySelector('.App'), config);
-  }, [config, gameOver]);
+  }, [config]);
+
+  useEffect(() => {
+    if (inCheck === true) {
+      console.log('In Check');
+    } else if (inCheckMate === true) {
+      console.log('In CheckMate');
+    } else if (inDraw === true) {
+      console.log('In Draw');
+    }
+  }, [inCheck, inCheckMate, inDraw]);
 
   useEffect(() => {
     socket.on('welcome', (message) => {
@@ -87,6 +87,8 @@ const Game = () => {
   socket.emit('message', { data: 'test' }, (err, response) => { // Här ska config-objektet skickas, istället för data: 'test'
     console.log(response.data);
   });
+
+  console.log(inCheckMate);
 
   return (
     <div className="App" />
