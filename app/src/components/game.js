@@ -67,10 +67,6 @@ const Game = () => {
       },
       move: (from, to) => {
         const move = chess.move({ from, to });
-        // If the move is legit, this if changes the turnColor, and while testing, the playercolor
-        if (move !== null) {
-          console.log(configObj.movable.color)
-        }
       },
     },
   };
