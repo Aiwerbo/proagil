@@ -8,41 +8,53 @@ import '../chess.css';
 const { Chessground } = require('chessground');
 
 const socket = io('http://localhost:5010');
-
+const chess = new Chess();
 const Game = () => {
-  const chess = new Chess();
+  
   let ground;
 
   const [inCheck, setInCheck] = useState(false);
   const [inCheckMate, setInCheckMate] = useState(false);
   const [inDraw, setInDraw] = useState(false);
+  const [chessMessage, setChessMessage] = useState("");
   const [config, updateConfig] = useState({
     fen: '',
     turnColor: 'white',
+    movableColor: 'white'
+  });
+  
+  let configObj = {
+    fen: config.fen,
+    turnColor: config.turnColor,
     movable: {
-      color: 'white', // Something like: userArray[0] = 'white' && userArray[1] = 'black'
+      color: config.movableColor, // Something like: userArray[0] = 'white' && userArray[1] = 'black'
       dests: {},
       events: {
         after: (from, to) => {
-          console.log(chess.ascii());
-          console.log(config.fen);
-          console.log(from, to);
-          console.log(chess.turn());
-
+    
           if (chess.in_check() === true) {
             setInCheck(true);
+            setChessMessage('In Check');
+            
           }
-
+      
           if (chess.in_checkmate() === true) {
             setInCheckMate(true);
+            setChessMessage('In CheckMate');
           }
-
+      
           if (chess.in_draw() === true) {
             setInDraw(true);
+            setChessMessage('In Draw');
           }
 
           const fen = chess.fen();
-          updateConfig({ ...config, fen }); // Fen-update not working, yet updating useEffect.
+          const color = chess.turn()
+          let turn;
+         
+          (color === 'b') ? turn = 'black' : turn = 'white';
+
+          updateConfig({ ...config, fen: fen, turnColor: turn, movableColor: turn});
         },
       },
     },
@@ -57,26 +69,15 @@ const Game = () => {
         const move = chess.move({ from, to });
         // If the move is legit, this if changes the turnColor, and while testing, the playercolor
         if (move !== null) {
-          config.turnColor === 'white' ? config.turnColor = 'black' : config.turnColor = 'white';
-          config.movable.color === 'white' ? config.movable.color = 'black' : config.movable.color = 'white';
+          console.log(configObj.movable.color)
         }
       },
     },
-  });
+  };
 
   useEffect(() => {
-    ground = Chessground(document.querySelector('.App'), config);
-  }, [config]);
-
-  useEffect(() => {
-    if (inCheck === true) {
-      console.log('In Check');
-    } else if (inCheckMate === true) {
-      console.log('In CheckMate');
-    } else if (inDraw === true) {
-      console.log('In Draw');
-    }
-  }, [inCheck, inCheckMate, inDraw]);
+    ground = Chessground(document.querySelector('.App'), configObj);
+  }, [configObj]);
 
   useEffect(() => {
     socket.on('welcome', (message) => {
@@ -88,10 +89,11 @@ const Game = () => {
     console.log(response.data);
   });
 
-  console.log(inCheckMate);
-
   return (
+    <>
     <div className="App" />
+    {chessMessage}
+    </>
   );
 };
 
