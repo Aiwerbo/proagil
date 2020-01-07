@@ -28,6 +28,7 @@ const LobbyComponent = ({ location }) => {
   };
 
   if (playMatch) {
+    console.log(location)
     return (
       <Redirect
         to={{

@@ -3,6 +3,7 @@ import '../App.css';
 import io from 'socket.io-client';
 import 'react-chessground/dist/styles/chessground.css';
 import Chess from 'chess.js';
+import { getPlayers } from '../utils/REST-API';
 import '../chess.css';
 
 const { Chessground } = require('chessground');
@@ -16,6 +17,7 @@ const Game = () => {
   const [inCheck, setInCheck] = useState(false);
   const [inCheckMate, setInCheckMate] = useState(false);
   const [inDraw, setInDraw] = useState(false);
+  const [players, setPlayers] = useState([])
   const [chessMessage, setChessMessage] = useState("");
   const [config, updateConfig] = useState({
     fen: '',
@@ -76,15 +78,34 @@ const Game = () => {
   }, [configObj]);
 
   useEffect(() => {
+    const id = window.location.pathname.substr(6)
+      getPlayers(id).then(res => {
+      console.log(res)
+      setPlayers(res.data)
+      return res
+    })
+    .then((res) => {
+      
+
+      if(res.data.length > 1) {
+        updateConfig({...config, movableColor: 'black'})
+      }
+    })
+    
+  }, [])
+
+  useEffect(() => {
     socket.on('welcome', (message) => {
       console.log(message);
     });
   }, []);
 
   socket.emit('message', { data: 'test' }, (err, response) => { // Här ska config-objektet skickas, istället för data: 'test'
+    
     console.log(response.data);
   });
-
+  console.log(players)
+  console.log(configObj.movable.color)
   return (
     <>
     <div className="App" />
