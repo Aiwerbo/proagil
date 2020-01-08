@@ -6,8 +6,12 @@ io.sockets.on('connection', (socket) => {
   socket.emit('welcome', 'User connected to Chess server');
 
   socket.on('message', (msg) => {
-    console.log(msg.data.room)
+    console.log(msg)
     socket.broadcast.emit(msg.data.room, { data: msg.data });
   });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected')
+  })
 });
 console.log(`Socket.io server started on port ${port}`);

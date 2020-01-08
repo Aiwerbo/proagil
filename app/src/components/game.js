@@ -5,6 +5,7 @@ import 'react-chessground/dist/styles/chessground.css';
 import Chess from 'chess.js';
 import { getPlayers } from '../utils/REST-API';
 import '../chess.css';
+import { Redirect } from 'react-router-dom';
 
 const { Chessground } = require('chessground');
 
@@ -12,6 +13,7 @@ const socket = io('http://localhost:5010');
 const chess = new Chess();
 let ground;
 const Game = () => {
+  let turn;
   const [inCheck, setInCheck] = useState(false);
   const [inCheckMate, setInCheckMate] = useState(false);
   const [inDraw, setInDraw] = useState(false);
@@ -44,8 +46,6 @@ const Game = () => {
             setInDraw(true);
             setChessMessage('In Draw');
           }
-          let turn;
-          config.turnColor === 'white' ? turn = 'black' : turn = 'white';
           const obj = {
             fen: chess.fen(),
             turnColor: turn,
@@ -67,6 +67,11 @@ const Game = () => {
       },
       move: (from, to) => {
         const move = chess.move({ from, to });
+        if (move) {
+          config.turnColor === 'white' ? turn = 'black' : turn = 'white';
+        } else {
+          turn = config.turnColor;
+        }
       },
     },
   };
