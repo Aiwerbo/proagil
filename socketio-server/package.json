@@ -5,7 +5,7 @@
   "main": "socketserver.js",
   "scripts": {
     "test": "mocha --require babel-register test/*.js --exit",
-    "lint": "eslint socketserver.js"
+    "lint": "eslint socketserver.js testsocketserver.js ./test/socketserver.test.js"
   },
   "author": "",
   "license": "ISC",

@@ -1,6 +1,8 @@
 const chai = require('chai');
+
 const should = chai.should();
 const io = require('socket.io-client');
+
 let client1;
 let client2;
 
@@ -15,18 +17,18 @@ afterEach((done) => {
   done();
 });
 
-describe("Socket server connection", () => {
+describe('Socket server connection', () => {
   it('users trying to connected ', (done) => {
-    client1.on('connect', (data) => {
+    client1.on('connect', () => {
       done();
     });
   });
 });
 
-describe("Server respond", () => {
+describe('Server respond', () => {
   it('User sending chess object ', (done) => {
-    const obj = {room: '123', turnColor: 'black', fen: '456'};
-    client1.emit('message', {data: obj}, () => {
+    const obj = { room: '123', turnColor: 'black', fen: '456' };
+    client1.emit('message', { data: obj }, () => {
     });
     client2.on('123', (message) => {
       message.data.should.be.an('object');
