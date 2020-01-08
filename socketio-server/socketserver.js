@@ -6,7 +6,8 @@ io.sockets.on('connection', (socket) => {
   socket.emit('welcome', 'User connected to Chess server');
 
   socket.on('message', (msg) => {
-    socket.emit('welcome', { data: `Hey from server. You sent me: ${msg.data}` });
+    console.log(msg.data.room)
+    socket.broadcast.emit(msg.data.room, { data: msg.data });
   });
 });
 console.log(`Socket.io server started on port ${port}`);
