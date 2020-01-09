@@ -1,0 +1,20 @@
+body, div, input {
+    box-sizing: border-box;
+    font-size: 100%;
+    font-family: Roboto, arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(to bottom right , rgba(2,20,28,1) 0%, rgba(19,76,98,1) 35%, rgba(6,75,99,1) 70%, rgba(2,20,28,1) 100%);
+}
+
+button {
+    background-color: rgb(15, 141, 141);
+    color: #ffffff;
+    text-transform: uppercase;
+    border: 0;
+    cursor: pointer;
+    letter-spacing: 1px;
+    outline: 0;
+    border-radius: 2px;
+}
