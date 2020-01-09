@@ -7,6 +7,6 @@ export const getAllGames = () => axios.get(seekURL);
 export const postNewGame = (name) => axios.post(seekURL, name);
 export const postJoinGame = (name, id) => axios.post(`${seekURL}/${id}`, name);
 
-export const getMoves = (id) => axios.get(`${gameURL}/${id}`);
+export const getPlayers = (id) => axios.get(`${gameURL}/${id}`);
 export const postMoves = (move, id) =>
   axios.post(`${gameURL}/move/${id}`, move);

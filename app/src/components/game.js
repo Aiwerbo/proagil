@@ -3,58 +3,58 @@ import '../App.css';
 import io from 'socket.io-client';
 import 'react-chessground/dist/styles/chessground.css';
 import Chess from 'chess.js';
+import { getPlayers } from '../utils/REST-API';
 import '../chess.css';
+import { Redirect } from 'react-router-dom';
 
 const { Chessground } = require('chessground');
 
 const socket = io('http://localhost:5010');
 const chess = new Chess();
+let ground;
 const Game = () => {
-  
-  let ground;
-
+  let turn;
   const [inCheck, setInCheck] = useState(false);
   const [inCheckMate, setInCheckMate] = useState(false);
   const [inDraw, setInDraw] = useState(false);
-  const [chessMessage, setChessMessage] = useState("");
+  const [players, setPlayers] = useState([]);
+  const [room, setRoom] = useState('');
+  const [chessMessage, setChessMessage] = useState('');
+  const [movableColors, setMovableColor] = useState('');
   const [config, updateConfig] = useState({
-    fen: '',
     turnColor: 'white',
-    movableColor: 'white'
+    fen: '',
   });
-  
-  let configObj = {
+  const configObj = {
     fen: config.fen,
     turnColor: config.turnColor,
+    orientation: movableColors,
     movable: {
-      color: config.movableColor, // Something like: userArray[0] = 'white' && userArray[1] = 'black'
+      color: movableColors,
       dests: {},
       events: {
-        after: (from, to) => {
-    
+        after: () => {
           if (chess.in_check() === true) {
             setInCheck(true);
             setChessMessage('In Check');
-            
           }
-      
           if (chess.in_checkmate() === true) {
             setInCheckMate(true);
             setChessMessage('In CheckMate');
           }
-      
           if (chess.in_draw() === true) {
             setInDraw(true);
             setChessMessage('In Draw');
           }
+          const obj = {
+            fen: chess.fen(),
+            turnColor: turn,
+            room,
+          };
+          socket.emit('message', { data: obj }, () => {
+          });
 
-          const fen = chess.fen();
-          const color = chess.turn()
-          let turn;
-         
-          (color === 'b') ? turn = 'black' : turn = 'white';
-
-          updateConfig({ ...config, fen: fen, turnColor: turn, movableColor: turn});
+          updateConfig({ ...config, fen: chess.fen(), turnColor: turn });
         },
       },
     },
@@ -67,28 +67,46 @@ const Game = () => {
       },
       move: (from, to) => {
         const move = chess.move({ from, to });
+        if (move) {
+          config.turnColor === 'white' ? turn = 'black' : turn = 'white';
+        } else {
+          turn = config.turnColor;
+        }
       },
     },
   };
 
   useEffect(() => {
     ground = Chessground(document.querySelector('.App'), configObj);
-  }, [configObj]);
-
+  }, [configObj, movableColors, config]);
   useEffect(() => {
-    socket.on('welcome', (message) => {
-      console.log(message);
-    });
+    const id = window.location.pathname.substr(6);
+    getPlayers(id).then((res) => {
+      setPlayers(res.data);
+      return res;
+    })
+      .then((res) => {
+        if (res.data.length > 1) {
+          setMovableColor('black');
+          setRoom(id);
+        } else {
+          setMovableColor('white');
+          setRoom(id);
+        }
+      });
   }, []);
 
-  socket.emit('message', { data: 'test' }, (err, response) => { // Här ska config-objektet skickas, istället för data: 'test'
-    console.log(response.data);
-  });
+  useEffect(() => {
+    socket.on(room, (message) => {
+      chess.load(message.data.fen);
+      updateConfig({ ...config, fen: message.data.fen, turnColor: message.data.turnColor });
+    });
+  }, [room]);
 
   return (
     <>
-    <div className="App" />
-    {chessMessage}
+      <div className="App" />
+      {chessMessage}
     </>
   );
 };

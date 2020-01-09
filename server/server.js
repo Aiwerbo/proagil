@@ -87,7 +87,7 @@ server.get(`${gameURL}/:id`, (req, res) => {
       res.status(403).end();
       return;
     }
-    res.status(200).send(filtered[0].moves);
+    res.status(200).send(filtered[0].spelare);
   });
 });
 
