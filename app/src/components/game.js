@@ -5,15 +5,16 @@ import 'react-chessground/dist/styles/chessground.css';
 import Chess from 'chess.js';
 import { getPlayers } from '../utils/REST-API';
 import '../chess.css';
-import { Redirect } from 'react-router-dom';
 
 const { Chessground } = require('chessground');
 
 const socket = io('http://localhost:5010');
 const chess = new Chess();
 let ground;
+
 const Game = () => {
   let turn;
+
   const [inCheck, setInCheck] = useState(false);
   const [inCheckMate, setInCheckMate] = useState(false);
   const [inDraw, setInDraw] = useState(false);
@@ -21,6 +22,22 @@ const Game = () => {
   const [room, setRoom] = useState('');
   const [chessMessage, setChessMessage] = useState('');
   const [movableColors, setMovableColor] = useState('');
+
+  const checkDraw = () => {
+    if (chess.in_check() === true) {
+      setInCheck(true);
+      setChessMessage('In Check');
+    }
+    if (chess.in_checkmate() === true) {
+      setInCheckMate(true);
+      setChessMessage('In CheckMate');
+    }
+    if (chess.in_draw() === true) {
+      setInDraw(true);
+      setChessMessage('In Draw');
+    }
+  };
+
   const [config, updateConfig] = useState({
     turnColor: 'white',
     fen: '',
@@ -57,28 +74,13 @@ const Game = () => {
       move: (from, to) => {
         const move = chess.move({ from, to });
         if (move) {
-          config.turnColor === 'white' ? turn = 'black' : turn = 'white';
+          turn = (config.turnColor === 'white') ? 'black' : 'white';
         } else {
           turn = config.turnColor;
         }
       },
     },
   };
-
-  const checkDraw = () => {
-    if (chess.in_check() === true) {
-      setInCheck(true);
-      setChessMessage('In Check');
-    }
-    if (chess.in_checkmate() === true) {
-      setInCheckMate(true);
-      setChessMessage('In CheckMate');
-    }
-    if (chess.in_draw() === true) {
-      setInDraw(true);
-      setChessMessage('In Draw');
-    }
-  }
 
   useEffect(() => {
     ground = Chessground(document.querySelector('.App'), configObj);
@@ -103,7 +105,7 @@ const Game = () => {
   useEffect(() => {
     socket.on(room, (message) => {
       chess.load(message.data.fen);
-      checkDraw()
+      checkDraw();
       updateConfig({ ...config, fen: message.data.fen, turnColor: message.data.turnColor });
     });
   }, [room]);
