@@ -85,6 +85,7 @@ const Game = () => {
   useEffect(() => {
     ground = Chessground(document.querySelector('.App'), configObj);
   }, [configObj, movableColors, config]);
+
   useEffect(() => {
     const id = window.location.pathname.substr(6);
     getPlayers(id).then((res) => {
