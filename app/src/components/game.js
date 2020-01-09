@@ -31,6 +31,10 @@ const Game = () => {
       setInCheck(true);
       setChessMessage('In Check');
     }
+    else {
+      setInCheck(false)
+      setChessMessage('');
+    }
     if (chess.in_checkmate() === true) {
       setInCheckMate(true);
       setChessMessage('In CheckMate');
