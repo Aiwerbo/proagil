@@ -62,18 +62,57 @@ describe('Post accept to play game', () => {
   });
 });
 
-describe('Test to get all moves', () => {
+describe('Test to get all players', () => {
   describe('GET /test/api/game/{id}', () => {
-    it('Should get all moves', (done) => {
+    it('Should get all players', (done) => {
       chai
         .request('http://localhost:5001')
         .get('/test/api/game/1')
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('array');
-          res.body[0].should.have.all.keys('from', 'to')
+          //res.body[0].should.have.all.keys('from', 'to')
           done();
         });
     });
   });
 });
+
+
+describe('Test to get all moves', () => {
+  describe('GET /test/api/game/move/{id}', () => {
+    it('Should get all moves', (done) => {
+      chai
+        .request('http://localhost:5001')
+        .get('/test/api/game/move/1')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          done();
+        });
+    });
+  });
+});
+
+//test/api/game /move/:id`,
+
+describe('Test to post a move', () => {
+  describe('POST /test/api/game/move/{id}', () => {
+    it('Should post a move', (done) => {
+      chai
+        .request('http://localhost:5001')
+        .post('/test/api/game/move/1')
+        .send({
+          move: 'Test'
+        })
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.be.a('array');
+          //res.body[0].should.have.all.keys('move')
+          done();
+        });
+    });
+  });
+});
+
+

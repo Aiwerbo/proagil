@@ -91,7 +91,36 @@ server.get(`${gameURL}/:id`, (req, res) => {
   });
 });
 
-server.post(`${gameURL}/move`, (req, res) => res.send('Game Move Post'));
+// POST moves to specific game
+server.post(`${gameURL}/move/:id`, (req, res) => { 
+  if (!req.body.move || !req.params.id) {
+    res.status(404).end();
+    return;
+  }
+    const { id } = req.params;
+    const { move } = req.body;
+    fs.readFile('games.json', (err, data) => {
+      const json = JSON.parse(data);
+      const filtered = json.filter((x) => x.id === id);
+      filtered[0].moves.push(move);
+      writeFileFn(json)
+      res.status(201).send(filtered[0].moves);
+  });
+});
+
+//GET all moves from a specific game
+server.get(`${gameURL}/move/:id`, (req, res) => {
+  if (!req.params.id) {
+    res.status(404).end();
+    return;
+  }
+  const { id } = req.params;
+  fs.readFile('games.json', (err, data) => {
+    const json = JSON.parse(data);
+    const filtered = json.filter((x) => x.id === id);
+    res.status(200).send(filtered[0].moves);
+  });
+});
 
 server.listen(port, () =>
   console.log(`Chess server listening on port ${port}!`)
