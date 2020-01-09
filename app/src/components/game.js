@@ -22,7 +22,10 @@ const Game = () => {
   const [room, setRoom] = useState('');
   const [chessMessage, setChessMessage] = useState('');
   const [movableColors, setMovableColor] = useState('');
-
+  const [config, updateConfig] = useState({
+    turnColor: 'white',
+    fen: '',
+  });
   const checkDraw = () => {
     if (chess.in_check() === true) {
       setInCheck(true);
@@ -37,11 +40,6 @@ const Game = () => {
       setChessMessage('In Draw');
     }
   };
-
-  const [config, updateConfig] = useState({
-    turnColor: 'white',
-    fen: '',
-  });
   const configObj = {
     fen: config.fen,
     turnColor: config.turnColor,
