@@ -34,18 +34,7 @@ const Game = () => {
       dests: {},
       events: {
         after: () => {
-          if (chess.in_check() === true) {
-            setInCheck(true);
-            setChessMessage('In Check');
-          }
-          if (chess.in_checkmate() === true) {
-            setInCheckMate(true);
-            setChessMessage('In CheckMate');
-          }
-          if (chess.in_draw() === true) {
-            setInDraw(true);
-            setChessMessage('In Draw');
-          }
+          checkDraw();
           const obj = {
             fen: chess.fen(),
             turnColor: turn,
@@ -76,6 +65,21 @@ const Game = () => {
     },
   };
 
+  const checkDraw = () => {
+    if (chess.in_check() === true) {
+      setInCheck(true);
+      setChessMessage('In Check');
+    }
+    if (chess.in_checkmate() === true) {
+      setInCheckMate(true);
+      setChessMessage('In CheckMate');
+    }
+    if (chess.in_draw() === true) {
+      setInDraw(true);
+      setChessMessage('In Draw');
+    }
+  }
+
   useEffect(() => {
     ground = Chessground(document.querySelector('.App'), configObj);
   }, [configObj, movableColors, config]);
@@ -99,6 +103,7 @@ const Game = () => {
   useEffect(() => {
     socket.on(room, (message) => {
       chess.load(message.data.fen);
+      checkDraw()
       updateConfig({ ...config, fen: message.data.fen, turnColor: message.data.turnColor });
     });
   }, [room]);
