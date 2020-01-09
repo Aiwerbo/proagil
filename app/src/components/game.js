@@ -5,7 +5,6 @@ import 'react-chessground/dist/styles/chessground.css';
 import Chess from 'chess.js';
 import { getPlayers } from '../utils/REST-API';
 import '../chess.css';
-import { Redirect } from 'react-router-dom';
 
 const { Chessground } = require('chessground');
 
@@ -79,6 +78,7 @@ const Game = () => {
   useEffect(() => {
     ground = Chessground(document.querySelector('.App'), configObj);
   }, [configObj, movableColors, config]);
+
   useEffect(() => {
     const id = window.location.pathname.substr(6);
     getPlayers(id).then((res) => {
