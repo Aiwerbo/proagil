@@ -15,9 +15,6 @@ let ground;
 const Game = () => {
   let turn;
 
-  const [inCheck, setInCheck] = useState(false);
-  const [inCheckMate, setInCheckMate] = useState(false);
-  const [inDraw, setInDraw] = useState(false);
   const [players, setPlayers] = useState([]);
   const [room, setRoom] = useState('');
   const [chessMessage, setChessMessage] = useState('');
@@ -28,19 +25,15 @@ const Game = () => {
   });
   const checkDraw = () => {
     if (chess.in_checkmate() === true) {
-      setInCheckMate(true);
       setChessMessage('In CheckMate');
     }
-    if (chess.in_draw() === true) {
-      setInDraw(true);
+    else if (chess.in_draw() === true) {
       setChessMessage('In Draw');
     }
-    if (chess.in_check() === true) {
-      setInCheck(true);
+    else if (chess.in_check() === true) {
       setChessMessage('In Check');
     }
     else {
-      setInCheck(false)
       setChessMessage('');
     }
   };
