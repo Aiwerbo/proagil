@@ -27,14 +27,6 @@ const Game = () => {
     fen: '',
   });
   const checkDraw = () => {
-    if (chess.in_check() === true) {
-      setInCheck(true);
-      setChessMessage('In Check');
-    }
-    else {
-      setInCheck(false)
-      setChessMessage('');
-    }
     if (chess.in_checkmate() === true) {
       setInCheckMate(true);
       setChessMessage('In CheckMate');
@@ -42,6 +34,14 @@ const Game = () => {
     if (chess.in_draw() === true) {
       setInDraw(true);
       setChessMessage('In Draw');
+    }
+    if (chess.in_check() === true) {
+      setInCheck(true);
+      setChessMessage('In Check');
+    }
+    else {
+      setInCheck(false)
+      setChessMessage('');
     }
   };
   const configObj = {
