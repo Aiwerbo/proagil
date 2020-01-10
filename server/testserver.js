@@ -74,9 +74,9 @@ server.post(`${seekURL}/:id`, (req, res) => {
 
 server.get(`${gameURL}/:id`, (req, res) => {
   // may iunclude the strange hashish chess string instead of below crap data.
-  if(!req.body.id) {
+  if (!req.params.id) {
     res.status(404).end();
-      return;
+    return;
   }
   const { id } = req.params;
   fs.readFile('testgames.json', (err, data) => {
@@ -86,9 +86,43 @@ server.get(`${gameURL}/:id`, (req, res) => {
       res.status(403).end();
       return;
     }
+    res.status(200).send(filtered[0].spelare);
+  });
+});
+
+// POST moves to specific game
+server.post(`${gameURL}/move/:id`, (req, res) => { 
+  if (!req.body.move || !req.params.id) {
+    res.status(404).end();
+    return;
+  }
+    const { id } = req.params;
+    const { move } = req.body;
+    fs.readFile('testgames.json', (err, data) => {
+      const json = JSON.parse(data);
+      const filtered = json.filter((x) => x.id === id);
+      filtered[0].moves.push(move);
+      fs.writeFile('testgames.json', JSON.stringify(json), (error) => {
+        if (error) throw error;
+      });
+      res.status(201).send(filtered[0].moves);
+  });
+});
+
+//GET all moves from a specific game
+server.get(`${gameURL}/move/:id`, (req, res) => {
+  if (!req.params.id) {
+    res.status(404).end();
+    return;
+  }
+  const { id } = req.params;
+  fs.readFile('testgames.json', (err, data) => {
+    const json = JSON.parse(data);
+    const filtered = json.filter((x) => x.id === id);
     res.status(200).send(filtered[0].moves);
   });
 });
+
 
 server.post(`${gameURL}/move`, (req, res) => res.send('Game Move Post'));
 
