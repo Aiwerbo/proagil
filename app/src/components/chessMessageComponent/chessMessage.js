@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import './chessMessage.css'
 
 const ChessMessage = (props) => {
-    
-    const styleObj = {
-
-    }
 
     return (
         <>
-            <div className="chessMessage" style={styleObj}>
+            <div className="chessMessage">
                 {props.chessMessage}
             </div>
         </>

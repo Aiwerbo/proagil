@@ -5,8 +5,7 @@ import 'react-chessground/dist/styles/chessground.css';
 import Chess from 'chess.js';
 import { getPlayers, postMoves, getMoves } from '../utils/REST-API';
 import '../chess.css';
-import SideMenu from './sideMenu.js'
-import axios from 'axios';
+import SideMenu from './sideMenuComponent/sideMenu.js'
 
 const { Chessground } = require('chessground');
 
@@ -19,7 +18,7 @@ const Game = () => {
 
   const [players, setPlayers] = useState([]);
   const [room, setRoom] = useState('');
-  const [chessMessage, setChessMessage] = useState('');
+  const [chessMessage, setChessMessage] = useState('Ongoing Game');
   const [movableColors, setMovableColor] = useState('');
   const [moveHistory, updateMoveHistory] = useState([])
   const [config, updateConfig] = useState({
@@ -37,7 +36,7 @@ const Game = () => {
       setChessMessage('In Check');
     }
     else {
-      setChessMessage('');
+      setChessMessage('Ongoing Game');
     }
   };
   const configObj = {
@@ -122,11 +121,11 @@ const Game = () => {
 
   useEffect(() => {
     const id = window.location.pathname.substr(6);
-
-      getMoves(id).then((res) => {
+    setTimeout(() => {
+      getMoves(room).then((res) => {
         updateMoveHistory(res.data)
       })
-
+    }, 1000);
   }, [config])
 
   let styleObj = {
