@@ -68,7 +68,7 @@ server.post(`${seekURL}/:id`, (req, res) => {
     fs.writeFile('testgames.json', JSON.stringify(json), (error) => {
       if (error) throw error;
     });
-    res.status(200).send(filtered);
+    res.status(200).send(filtered[0]);
   });
 });
 
@@ -122,9 +122,6 @@ server.get(`${gameURL}/move/:id`, (req, res) => {
     res.status(200).send(filtered[0].moves);
   });
 });
-
-
-server.post(`${gameURL}/move`, (req, res) => res.send('Game Move Post'));
 
 server.listen(port, () =>
   console.log(`Chess server listening on port ${port}!`)
