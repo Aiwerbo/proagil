@@ -3,8 +3,10 @@ import '../App.css';
 import io from 'socket.io-client';
 import 'react-chessground/dist/styles/chessground.css';
 import Chess from 'chess.js';
-import { getPlayers } from '../utils/REST-API';
+import { getPlayers, postMoves, getMoves } from '../utils/REST-API';
 import '../chess.css';
+import SideMenu from './sideMenu.js'
+import axios from 'axios';
 
 const { Chessground } = require('chessground');
 
@@ -19,6 +21,7 @@ const Game = () => {
   const [room, setRoom] = useState('');
   const [chessMessage, setChessMessage] = useState('');
   const [movableColors, setMovableColor] = useState('');
+  const [moveHistory, updateMoveHistory] = useState([])
   const [config, updateConfig] = useState({
     turnColor: 'white',
     fen: '',
@@ -55,6 +58,17 @@ const Game = () => {
           socket.emit('message', { data: obj }, () => {
           });
 
+          const id = window.location.pathname.substr(6);
+          let move = chess.history({verbose: true});
+          let obj2 = {
+            move: move[0]
+          }
+
+          postMoves(obj2, id).then((res) => {
+            console.log(res)
+            updateMoveHistory(res.data)
+          })
+          
           updateConfig({ ...config, fen: chess.fen(), turnColor: turn });
         },
       },
@@ -106,10 +120,31 @@ const Game = () => {
     });
   }, [room]);
 
+  useEffect(() => {
+    const id = window.location.pathname.substr(6);
+
+      getMoves(id).then((res) => {
+        updateMoveHistory(res.data)
+      })
+
+  }, [config])
+
+  let styleObj = {
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }
+
+  console.log("MoveHistory:")
+  console.log(moveHistory)
+
   return (
     <>
-      <div className="App" />
-      {chessMessage}
+      <div className="Chessgame_Container_Main" style={styleObj}>
+        <div className="App"/>
+        <SideMenu chessMessage={chessMessage} moveHistory={moveHistory}/>
+      </div>
     </>
   );
 };

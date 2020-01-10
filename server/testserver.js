@@ -46,7 +46,11 @@ server.post(seekURL, (req, res) => {
 });
 // Accept to play game
 server.post(`${seekURL}/:id`, (req, res) => {
-  if(!req.params.id || !req.body.spelare) {
+  if(!req.params.id) {
+    res.status(404).end()
+    return;
+  }
+  else if (!req.body.spelare) {
     res.status(400).end()
     return;
   }
@@ -92,8 +96,12 @@ server.get(`${gameURL}/:id`, (req, res) => {
 
 // POST moves to specific game
 server.post(`${gameURL}/move/:id`, (req, res) => { 
-  if (!req.body.move || !req.params.id) {
+  if (!req.params.id) {
     res.status(404).end();
+    return;
+  }
+  else if (!req.body.move) {
+    res.status(400).end();
     return;
   }
     const { id } = req.params;
