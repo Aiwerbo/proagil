@@ -9,7 +9,9 @@ const SideMenu = (props) => {
         <>
             <div className="sideMenu">
                 <ChessMessage chessMessage={props.chessMessage} />
-                <MoveList moveHistory={props.moveHistory}/>
+                <div className="movieList-container">
+                    <MoveList moveHistory={props.moveHistory}/>
+                </div>
             </div>
         </>
     );

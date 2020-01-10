@@ -1,9 +1,10 @@
 .chessMessage {
-    height: 20%;
+    height: 70px;
     display: flex;
     color: white;
     justify-content: center;
     align-items: center;
-    font-size: 36px;
+    font-size: 18px;
     font-weight: bold;
+    overflow: auto;
 }

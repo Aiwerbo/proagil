@@ -9,6 +9,7 @@ const MoveList = (props) => {
                 <div className="history_item">
                     White: From: {x.from}, To: {x.to}
                 </div>
+                
             )
         }
         else if (x.color === 'b') {
@@ -16,6 +17,7 @@ const MoveList = (props) => {
                 <div className="history_item">
                     Black: From: {x.from}, To: {x.to}
                 </div>
+                
             )
         }
 
