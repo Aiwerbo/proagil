@@ -5,7 +5,8 @@ import 'react-chessground/dist/styles/chessground.css';
 import Chess from 'chess.js';
 import { getPlayers, postMoves, getMoves } from '../utils/REST-API';
 import '../chess.css';
-import SideMenu from './sideMenuComponent/sideMenu.js'
+import './game.css';
+import SideMenu from './sideMenuComponent/sideMenu';
 
 const { Chessground } = require('chessground');
 
@@ -16,11 +17,10 @@ let ground;
 const Game = () => {
   let turn;
 
-  const [players, setPlayers] = useState([]);
   const [room, setRoom] = useState('');
   const [chessMessage, setChessMessage] = useState('Ongoing Game');
   const [movableColors, setMovableColor] = useState('');
-  const [moveHistory, updateMoveHistory] = useState([])
+  const [moveHistory, updateMoveHistory] = useState([]);
   const [config, updateConfig] = useState({
     turnColor: 'white',
     fen: '',
@@ -28,14 +28,11 @@ const Game = () => {
   const checkDraw = () => {
     if (chess.in_checkmate() === true) {
       setChessMessage('In CheckMate');
-    }
-    else if (chess.in_draw() === true) {
+    } else if (chess.in_draw() === true) {
       setChessMessage('In Draw');
-    }
-    else if (chess.in_check() === true) {
+    } else if (chess.in_check() === true) {
       setChessMessage('In Check');
-    }
-    else {
+    } else {
       setChessMessage('Ongoing Game');
     }
   };
@@ -58,16 +55,15 @@ const Game = () => {
           });
 
           const id = window.location.pathname.substr(6);
-          let move = chess.history({verbose: true});
-          let obj2 = {
-            move: move[0]
-          }
+          const move = chess.history({ verbose: true });
+          const obj2 = {
+            move: move[0],
+          };
 
           postMoves(obj2, id).then((res) => {
-            console.log(res)
-            updateMoveHistory(res.data)
-          })
-          
+            updateMoveHistory(res.data);
+          });
+
           updateConfig({ ...config, fen: chess.fen(), turnColor: turn });
         },
       },
@@ -97,7 +93,6 @@ const Game = () => {
   useEffect(() => {
     const id = window.location.pathname.substr(6);
     getPlayers(id).then((res) => {
-      setPlayers(res.data);
       return res;
     })
       .then((res) => {
@@ -120,29 +115,18 @@ const Game = () => {
   }, [room]);
 
   useEffect(() => {
-    const id = window.location.pathname.substr(6);
     setTimeout(() => {
       getMoves(room).then((res) => {
-        updateMoveHistory(res.data)
-      })
+        updateMoveHistory(res.data);
+      });
     }, 1000);
-  }, [config])
-
-  let styleObj = {
-    height: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  }
-
-  console.log("MoveHistory:")
-  console.log(moveHistory)
+  }, [config]);
 
   return (
     <>
-      <div className="Chessgame_Container_Main" style={styleObj}>
-        <div className="App"/>
-        <SideMenu chessMessage={chessMessage} moveHistory={moveHistory}/>
+      <div className="Chessgame_Container_Main">
+        <div className="App" />
+        <SideMenu chessMessage={chessMessage} moveHistory={moveHistory} />
       </div>
     </>
   );

@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import './chessMessage.css'
+import React from 'react';
+import './chessMessage.css';
 
-const ChessMessage = (props) => {
-
-    return (
-        <>
-            <div className="chessMessage">
-                {props.chessMessage}
-            </div>
-        </>
-    );
-};
+const ChessMessage = (props) => (
+  <>
+    <div className="chessMessage">
+      {props.chessMessage}
+    </div>
+  </>
+);
 
 export default ChessMessage;
