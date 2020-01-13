@@ -3,8 +3,10 @@ import '../App.css';
 import io from 'socket.io-client';
 import 'react-chessground/dist/styles/chessground.css';
 import Chess from 'chess.js';
-import { getPlayers } from '../utils/REST-API';
+import { getPlayers, postMoves, getMoves } from '../utils/REST-API';
 import '../chess.css';
+import './game.css';
+import SideMenu from './sideMenuComponent/sideMenu';
 
 const { Chessground } = require('chessground');
 
@@ -15,29 +17,23 @@ let ground;
 const Game = () => {
   let turn;
 
-  const [inCheck, setInCheck] = useState(false);
-  const [inCheckMate, setInCheckMate] = useState(false);
-  const [inDraw, setInDraw] = useState(false);
-  const [players, setPlayers] = useState([]);
   const [room, setRoom] = useState('');
-  const [chessMessage, setChessMessage] = useState('');
+  const [chessMessage, setChessMessage] = useState('Ongoing Game');
   const [movableColors, setMovableColor] = useState('');
+  const [moveHistory, updateMoveHistory] = useState([]);
   const [config, updateConfig] = useState({
     turnColor: 'white',
     fen: '',
   });
   const checkDraw = () => {
-    if (chess.in_check() === true) {
-      setInCheck(true);
-      setChessMessage('In Check');
-    }
     if (chess.in_checkmate() === true) {
-      setInCheckMate(true);
       setChessMessage('In CheckMate');
-    }
-    if (chess.in_draw() === true) {
-      setInDraw(true);
+    } else if (chess.in_draw() === true) {
       setChessMessage('In Draw');
+    } else if (chess.in_check() === true) {
+      setChessMessage('In Check');
+    } else {
+      setChessMessage('Ongoing Game');
     }
   };
   const configObj = {
@@ -56,6 +52,16 @@ const Game = () => {
             room,
           };
           socket.emit('message', { data: obj }, () => {
+          });
+
+          const id = window.location.pathname.substr(6);
+          const move = chess.history({ verbose: true });
+          const obj2 = {
+            move: move[0],
+          };
+
+          postMoves(obj2, id).then((res) => {
+            updateMoveHistory(res.data);
           });
 
           updateConfig({ ...config, fen: chess.fen(), turnColor: turn });
@@ -87,7 +93,6 @@ const Game = () => {
   useEffect(() => {
     const id = window.location.pathname.substr(6);
     getPlayers(id).then((res) => {
-      setPlayers(res.data);
       return res;
     })
       .then((res) => {
@@ -109,10 +114,20 @@ const Game = () => {
     });
   }, [room]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      getMoves(room).then((res) => {
+        updateMoveHistory(res.data);
+      });
+    }, 1000);
+  }, [config]);
+
   return (
     <>
-      <div className="App" />
-      {chessMessage}
+      <div className="Chessgame_Container_Main">
+        <div className="App" />
+        <SideMenu chessMessage={chessMessage} moveHistory={moveHistory} />
+      </div>
     </>
   );
 };
